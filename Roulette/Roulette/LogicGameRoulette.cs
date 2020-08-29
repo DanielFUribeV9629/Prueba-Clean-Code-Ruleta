@@ -40,6 +40,8 @@ namespace Roulette
                 }
                 else
                 {
+                    userList[i].addAmountOfBet(0f);
+                    userList[i].addBet("");
                 }
             }
             rouletteOpening(idRoulette);
@@ -69,6 +71,36 @@ namespace Roulette
         }
         public void rouletteClosing(int idRoulette)
         {
+            Random random = new Random();
+            List<User> players = rouletteList[idRoulette].getPlayersInGame();
+            int winningNumber = random.Next(0, 37);
+            string winningColor;
+            if (winningNumber % 2 == 0)
+            {
+                winningColor = "red";
+            }
+            else
+            {
+                winningColor = "black";
+            }
+            string winningBet = winningNumber.ToString();
+            Console.WriteLine("The number " + winningNumber + " and the color " + winningColor + " are the ones that win the bet");
+            for (int i = 0; i < players.Count(); i++)
+            {
+                if (players[i].getBets()[idRoulette].Equals(winningBet) || players[i].getBets()[idRoulette].Equals(winningColor))
+                {
+                    Console.WriteLine("Player " + players[i].getUserId() + ": wins the bet");
+                    float actualCreditOfUser = creditWinAfterBet(players[i], idRoulette, winningBet);
+                    Console.WriteLine("Player " + players[i].getUserId() + ": have " + actualCreditOfUser + " dollars ");
+                }
+                else
+                {
+                    Console.WriteLine("Player " + players[i].getUserId() + ": loses the bet");
+                    float actualCreditOfUser = players[i].getUserCredit();
+                    Console.WriteLine("Player " + players[i].getUserId() + ": have " + actualCreditOfUser + " dollars ");
+                }
+            }
+            rouletteList[idRoulette].setStateRoulette(false);
         }
         public bool BetTypeNumber(int idRoulette, int idUser)
         {
@@ -82,7 +114,8 @@ namespace Roulette
                 float amountToBet = float.Parse(chosenAmountToBet);
                 bool validBet = CreditValidation(amountToBet, idUser);
                 if (validBet)
-                {                    
+                {
+                    BetOnANumber(idRoulette, idUser, chosenNumberToBet, amountToBet);
                     return true;
                 }
                 else
@@ -107,12 +140,23 @@ namespace Roulette
             bool validBet = CreditValidation(amountToBet, idUser);
             if (validBet)
             {
+                BetOnAColor(idRoulette, idUser, colorForBet, amountToBet);
                 return true;
             }
             else
             {
                 return false;
             }
+        }
+        public void BetOnANumber(int idRoulette, int idUser, string numberToBet, float amountToBet)
+        {
+            userList[idUser].addAmountOfBet(amountToBet);
+            userList[idUser].addBet(numberToBet);
+        }
+        public void BetOnAColor(int idRoulette, int idUser, string colorToBet, float amountToBet)
+        {
+            userList[idUser].addAmountOfBet(amountToBet);
+            userList[idUser].addBet(colorToBet);
         }
         public bool CreditValidation(float amountToBet, int idUser)
         {
@@ -137,6 +181,23 @@ namespace Roulette
             }
             Console.WriteLine("How much is the bet for " + chosenColor + " color?");
             return chosenColor;
+        }
+        public float creditWinAfterBet(User user, int idRoulette, string betWinWithNumber)
+        {
+            List<float> amountOfBet = user.getAmountsOfBetsInGame();
+            float creditAfterWinningABet;
+            if (user.getBets()[idRoulette].Equals(betWinWithNumber))
+            {
+                creditAfterWinningABet = user.getUserCredit() + (amountOfBet[idRoulette] * 3.1f);
+                user.setUserCredit(creditAfterWinningABet);
+            }
+            else
+            {
+                creditAfterWinningABet = user.getUserCredit() + (amountOfBet[idRoulette] * 1.3f);
+                user.setUserCredit(creditAfterWinningABet);
+            }
+            Console.WriteLine("The player won with the bet: " + user.getBets()[idRoulette]);
+            return creditAfterWinningABet;
         }
     }
 }
