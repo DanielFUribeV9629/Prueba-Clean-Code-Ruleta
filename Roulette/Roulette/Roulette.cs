@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Roulette
 {
@@ -10,10 +6,20 @@ namespace Roulette
     {
         private int idRoulette;
         private bool stateRoulette;
+        private List<User> usersPlaying;
         public Roulette()
         {
             idRoulette = 1;
             stateRoulette = true;
+            usersPlaying = new List<User>();
+        }
+        public void addPlayer(User user)
+        {
+            usersPlaying.Add(user);
+        }
+        public List<User> getPlayersInGame()
+        {
+            return usersPlaying;
         }
         public int getIdRoulette()
         {
