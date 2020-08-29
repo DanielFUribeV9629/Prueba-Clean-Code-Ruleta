@@ -58,15 +58,85 @@ namespace Roulette
                 String betType = Console.ReadLine();
                 if (betType.Equals("1"))
                 {
+                    successful = BetTypeNumber(idRoulette, idUser);
                 }
                 else
                 {
+                    successful = BetTypeColor(idRoulette, idUser);
                 }
             }
             return successful;
         }
         public void rouletteClosing(int idRoulette)
         {
+        }
+        public bool BetTypeNumber(int idRoulette, int idUser)
+        {
+            Console.WriteLine("Player: " + idUser + " Choose a number to do a bet between 0-36");
+            String chosenNumberToBet = Console.ReadLine();
+            int numberToBet = int.Parse(chosenNumberToBet);
+            if (numberToBet >= 0 && numberToBet <= 36)
+            {
+                Console.WriteLine("How much is the bet for this number?");
+                string chosenAmountToBet = Console.ReadLine();
+                float amountToBet = float.Parse(chosenAmountToBet);
+                bool validBet = CreditValidation(amountToBet, idUser);
+                if (validBet)
+                {                    
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public bool BetTypeColor(int idRoulette, int idUser)
+        {
+            Console.WriteLine("Player: " + idUser + " Choose red or black color to do a bet");
+            Console.WriteLine("1. Bet red color");
+            Console.WriteLine("2. Bet black color");
+            String chosenColor = Console.ReadLine();
+            string colorForBet = toBetOnAColor(chosenColor);
+            string chosenAmountToBet = Console.ReadLine();
+            float amountToBet = float.Parse(chosenAmountToBet);
+            bool validBet = CreditValidation(amountToBet, idUser);
+            if (validBet)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public bool CreditValidation(float amountToBet, int idUser)
+        {
+            float userCredit = userList[idUser].getUserCredit();
+            if (userCredit > amountToBet)
+            {
+                userCredit = userCredit - amountToBet;
+                userList[idUser].setUserCredit(userCredit);
+                return true;
+            }
+            return false;
+        }
+        public string toBetOnAColor(string chosenColor)
+        {
+            if (chosenColor == "1")
+            {
+                chosenColor = "red";
+            }
+            else
+            {
+                chosenColor = "black";
+            }
+            Console.WriteLine("How much is the bet for " + chosenColor + " color?");
+            return chosenColor;
         }
     }
 }
