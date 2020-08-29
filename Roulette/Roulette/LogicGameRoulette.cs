@@ -30,9 +30,7 @@ namespace Roulette
             Roulette roulette = rouletteList[idRoulette];
             for (int i = 0; i < userList.Count(); i++)
             {
-                Console.WriteLine("Player " + userList[i].getUserId() + ": Are you going to play?");
-                Console.WriteLine("1. Yes, I'm in");
-                Console.WriteLine("2. Not this time");
+                Console.WriteLine("Player " + userList[i].getUserId() + ": Are you going to play? \n 1. Yes, I'm in \n 2. Not this time");                
                 String decisionToParticipate = Console.ReadLine();
                 if (decisionToParticipate.Equals("1"))
                 {
@@ -54,9 +52,7 @@ namespace Roulette
             for (int i = 0; i < players.Count(); i++)
             {
                 int idUser = players[i].getUserId();
-                Console.WriteLine("Player " + idUser + ": Which bet do you want to make?");
-                Console.WriteLine("1. Bet on a number");
-                Console.WriteLine("2. Bet on a color");
+                Console.WriteLine("Player " + idUser + ": Which bet do you want to make? \n 1. Bet on a number \n 2. Bet on a color");                
                 String betType = Console.ReadLine();
                 if (betType.Equals("1"))
                 {
@@ -84,7 +80,7 @@ namespace Roulette
                 winningColor = "black";
             }
             string winningBet = winningNumber.ToString();
-            Console.WriteLine("The number " + winningNumber + " and the color " + winningColor + " are the ones that win the bet");
+            Console.WriteLine("The number " + winningNumber + " and the color " + winningColor + " are the ones that win the bet \n -------------------------------------------");
             for (int i = 0; i < players.Count(); i++)
             {
                 if (players[i].getBets()[idRoulette].Equals(winningBet) || players[i].getBets()[idRoulette].Equals(winningColor))
@@ -130,9 +126,7 @@ namespace Roulette
         }
         public bool BetTypeColor(int idRoulette, int idUser)
         {
-            Console.WriteLine("Player: " + idUser + " Choose red or black color to do a bet");
-            Console.WriteLine("1. Bet red color");
-            Console.WriteLine("2. Bet black color");
+            Console.WriteLine("Player: " + idUser + " Choose red or black color to do a bet \n 1. Bet red color \n 2. Bet black color");            
             String chosenColor = Console.ReadLine();
             string colorForBet = toBetOnAColor(chosenColor);
             string chosenAmountToBet = Console.ReadLine();
@@ -198,6 +192,35 @@ namespace Roulette
             }
             Console.WriteLine("The player won with the bet: " + user.getBets()[idRoulette]);
             return creditAfterWinningABet;
+        }
+        public void viewCreatedRoulettes()
+        {
+            Console.WriteLine("-------------------------------------------");
+            Console.WriteLine("-------------------------------------------");
+            Console.WriteLine("Roulettes and states");
+            for (int i = 0; i < rouletteList.Count(); i++)
+            {
+                if (rouletteList[i].getStateRoulette() == true)
+                {
+                    Console.WriteLine("Roulette: " + rouletteList[i].getIdRoulette());
+                    Console.WriteLine("State of Roulette: Abierta");
+                }
+                else
+                {
+                    Console.WriteLine("Roulette: " + rouletteList[i].getIdRoulette());
+                    Console.WriteLine("State of Roulette: Cerrada");
+                }
+            }
+        }
+        public void viewBetsOfUsers()
+        {
+            for (int i = 0; i < userList.Count(); i++)
+            {
+                for (int j = 0; j < userList[i].getBets().Count(); j++)
+                {
+                    Console.WriteLine("User: " + userList[i].getBets()[j]);
+                }
+            }
         }
     }
 }

@@ -13,11 +13,13 @@ namespace Roulette
             }
             for (int id = 0; id < numberOfGames; id++)
             {
+                Console.WriteLine("\n -----Welcome to the Roulette Game-----");
                 Console.WriteLine("The game number " + (id + 1) + " is starting...");
                 idRoulette = logicGameRoulette.CreateRoulette();
                 logicGameRoulette.playersWhoWantToPlay(idRoulette);
                 logicGameRoulette.rouletteClosing(idRoulette);
             }
+            logicGameRoulette.viewCreatedRoulettes();
             Console.ReadKey();
         }
     }
